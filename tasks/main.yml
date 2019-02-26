@@ -20,24 +20,22 @@
   copy: src=epel.repo dest=/etc/yum.repos.d/epel_ansible.repo
   when: ansible_os_family == "RedHat"
 
-- name: Install the postgress packages
-  yum: name="{{ item }}" state=present
-  with_items: "{{ redhat_pkg }}"
+- name: Install the postgres packages
+  yum: name="{{ redhat_pkg }}" state=present
   when: ansible_os_family == "RedHat"
 
 - name: Install the postgres packages
-  apt: name="{{ item }}" state=present update_cache=yes
-  with_items: "{{ ubuntu_pkg }}"
+  apt: name="{{ ubuntu_pkg }}" state=present update_cache=yes
   when: ansible_os_family == "Debian"
 
-- name: Install python helper packages pip and dev
+- name: Install python helper packages
   vars:
     python_version_suffix: "{{ '3' if ansible_python.version.major == 3 else '' }}"
-  apt: name="{{ item }}"
-  with_items:
-    - python{{ python_version_suffix }}-pip
-    - python{{ python_version_suffix }}-dev
-    - python{{ python_version_suffix }}-selinux
+  apt:
+    name:
+      - python{{ python_version_suffix }}-pip
+      - python{{ python_version_suffix }}-dev
+      - python{{ python_version_suffix }}-selinux
   when: ansible_os_family == "Debian"
 
 - name: Install python pip packages for database configuration
