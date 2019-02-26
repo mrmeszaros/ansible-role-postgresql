@@ -48,6 +48,7 @@
 
 - name: Create database if not exist
   become: yes
+  # TODO review whether the become_method matters anyhow
   become_method: sudo
   become_user: postgres
   postgresql_db: name="{{ item.name }}"
@@ -59,6 +60,7 @@
 
 - name: Create database user
   become: yes
+  # TODO review whether the become_method matters anyhow
   become_method: sudo
   become_user: postgres
   postgresql_user: db="{{ item.0.name }}" name="{{ item.1.user }}" password="{{ item.1.password }}"
@@ -73,6 +75,7 @@
 
 - name: Set database user privileges
   become: yes
+  # TODO review whether the become_method matters anyhow
   become_method: sudo
   become_user: postgres
   postgresql_privs: >
